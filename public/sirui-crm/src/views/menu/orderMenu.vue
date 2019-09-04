@@ -3,7 +3,6 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>点餐操作</span>
-      <el-button style="float: right;" icon="el-icon-plus" type="primary" size="mini" @click="addMenuDialogVisible = false">点餐
       </el-button>
     </el-card>
     <div class="table-container">
@@ -26,9 +25,9 @@
     <!-- 重置密码 -->
     <el-dialog title="点餐平台" :visible.sync="addMenuDialogVisible" width="1400px" :close-on-click-modal="false">
       <el-form ref="addMenuForm" :model="addMenuForm" label-width="120px">
-        <el-form-item label="餐厅选择">
-          <el-select v-model="resetPasswordForm" filterable placeholder="请选择">
-            <el-option v-for="item in restaurant" :key="item.value" :label="item.label" :value="item.value">
+        <el-form-item label="餐厅选择" style="margin-left: -40px">
+          <el-select v-model="listQuery.restaurant_id" filterable placeholder="请选择" @change="searchMenuList()">
+            <el-option v-for="item in restaurantSearchList" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -36,14 +35,14 @@
           <p>
             <i class="el-icon-tickets"></i>
             <span>菜谱分类</span>
-            <p>
-              <el-checkbox-group v-model="resetPasswordForm" lable="测试">
-              <el-checkbox :label="col.value" :key="index" v-for="(col ,index) in menuList" >
-                {{ col.label }}
-              </el-checkbox>
-            </el-checkbox-group>
-            </p>
-             <el-divider></el-divider>
+            <div v-for="menus in menuList">
+              <p style="font-size: 18px">{{ menus.label}} :</p>
+              <el-checkbox-group v-model="orderMenuFormData.menu_id">
+                <el-checkbox v-for="(menuValue,menuKey) in menus.menuList" :key="menuKey" :label="menuValue.menu_id" :value="menuValue.menu_id" @change="selectMenu(menuValue)">
+                  {{ menuValue.menu_name}} ({{ menuValue.menu_amount }})
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
           </p>
         </el-card>
         <el-card class="operate-container" shadow="never">
@@ -51,37 +50,34 @@
             <i class="el-icon-tickets"></i>
             <span>订单信息</span>
             <el-form-item label="已选择的菜品：">
-              <span style="font-size: 20px">五花肉</span> +
-              <span style="font-size: 20px">五花肉</span> +
-              <span style="font-size: 20px">五花肉</span>
+              <span v-for="item in menuSelected" style="font-size: 20px; margin-right: 20px">{{ item }} + </span>
             </el-form-item>
             <p style="float: right; margin-right: 120px">
-              金额小计： <span style="color: red;font-size: 25px">￥100</span>
+              金额小计： <span style="color: red;font-size: 25px">￥ {{ orderMenuFormData.amount }}</span>
             </p>
-
           </p>
         </el-card>
       </el-form>
       <div slot="footer">
         <el-button size="small" @click="addMenuDialogVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="handleResetPassword()">确 定</el-button>
+        <el-button size="small" type="primary" @click="handleSendOrderData()">下 单</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-import { userList, deleteUser, resetPassword } from '@/api/user'
+import { menuList, createMenu, updateMenu, deleteMenu } from '@/api/menu/menu'
+import { restaurantList } from '@/api/menu/restaurant'
+import { menuTypeList } from '@/api/menu/menuType'
 import { formatDate } from '@/utils/date';
 import store from '@/store'
 const defaultListQuery = {
-  cur_page: 1,
-  page_size: 15,
+  restaurant_id: 1,
+  type: 'groupByMenuType'
 };
-const defaultResetPasswordForm = {
-  uid: null,
-  old_password: null,
-  new_password: null,
-  confirm_password: null,
+const defaultOrderMenuFormData = {
+  'menu_id': [],
+  'amount': 0,
 }
 export default {
   name: "userList",
@@ -93,48 +89,11 @@ export default {
       date: new Date(),
       nowDate: null,
       list: [],
-      total: null,
-      operateType: null,
+      menuList: [],
+      restaurantSearchList: [],
       addMenuDialogVisible: false,
-      multipleSelection: [],
-      closeOrder: {
-        dialogVisible: false,
-        content: null,
-        orderIds: []
-      },
-      resetPasswordForm: Object.assign({}, defaultResetPasswordForm),
-      restaurant: [{
-        value: '选项1',
-        label: '八少抄手'
-      }, {
-        value: '选项2',
-        label: '超惠食'
-      }, {
-        value: '选项3',
-        label: '超记'
-      }, {
-        value: '选项4',
-        label: '一品鲜'
-      }, {
-        value: '选项5',
-        label: '梅州腌面'
-      }],
-      menuList: [{
-        value: '选项1',
-        label: '八少抄手'
-      }, {
-        value: '选项2',
-        label: '超惠食'
-      }, {
-        value: '选项3',
-        label: '超记'
-      }, {
-        value: '选项4',
-        label: '一品鲜'
-      }, {
-        value: '选项5',
-        label: '梅州腌面'
-      }],
+      menuSelected: {},
+      orderMenuFormData: Object.assign({}, defaultOrderMenuFormData),
     }
   },
   created() {
@@ -148,7 +107,9 @@ export default {
     this.list['2019-09-01'] = '水煮鱼饭'
     this.list['2019-09-02'] = '麻婆豆腐'
     this.list['2019-09-03'] = '麻婆豆腐'
-    // this.getList();
+
+    this.getMenuList();
+    this.getRestaurantSearchList();
   },
   filters: {
     formatLoginTime(time) {
@@ -157,21 +118,20 @@ export default {
     },
   },
   methods: {
-    handleViewResetPassword(data) {
-      this.resetPasswordForm.uid = data.id
-      this.addMenuDialogVisible = true;
+    searchMenuList() {
+      this.getMenuList();
     },
-    handleResetPassword() {
-      resetPassword({ postData: this.resetPasswordForm }).then(response => {
-        this.$message({
-          message: '重置密码成功',
-          type: 'success',
-          duration: 1000
-        });
-        this.getList();
-        this.resetPasswordForm = Object.assign({}, defaultResetPasswordForm)
-        this.addMenuDialogVisible = false;
-      });
+    handleSendOrderData() {
+
+    },
+    selectMenu(menuValue) {
+      if (this.orderMenuFormData.menu_id.indexOf(menuValue.menu_id) != -1) {
+        this.orderMenuFormData.amount += menuValue.menu_amount
+        this.menuSelected[menuValue.menu_id] = menuValue.menu_name
+      } else {
+        this.orderMenuFormData.amount -= menuValue.menu_amount
+        delete this.menuSelected[menuValue.menu_id]
+      }
     },
     handleResetSearch() {
       this.listQuery = Object.assign({}, defaultListQuery);
@@ -179,9 +139,6 @@ export default {
     handleSearchList() {
       this.listQuery.cur_page = 1;
       this.getList();
-    },
-    handleDeleteUser(index, row) {
-      this.deleteUser(row.id);
     },
     handleSizeChange(val) {
       this.listQuery.cur_page = 1;
@@ -192,39 +149,21 @@ export default {
       this.listQuery.cur_page = val;
       this.getList();
     },
-    getList() {
-      this.listLoading = true;
-      userList(this.listQuery).then(response => {
-        this.listLoading = false;
-        this.list = response.data.list;
-        this.total = response.data.total;
+    getMenuList() {
+      menuList(this.listQuery).then(response => {
+        this.$nextTick(() => {
+          this.menuList = response.data.list;
+        })
+
       });
     },
-    handleAddUser() {
-      this.$router.push({ path: '/auth/user/create' });
-    },
-    handleEditUser(index, row) {
-      this.$router.push({ path: '/auth/user/update', query: { id: row.id } });
-    },
-    deleteUser(id) {
-      this.$confirm('是否要进行该删除操作?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        deleteUser(id).then(response => {
-          this.$message({
-            message: '删除成功！',
-            type: 'success',
-            duration: 1000
-          });
-          this.getList();
-        });
-      })
+    getRestaurantSearchList() {
+      restaurantList({ type: 'search' }).then(response => {
+        this.restaurantSearchList = response.data.list;
+      });
     },
     addMenu(date) {
       this.addMenuDialogVisible = true;
-      console.log(date)
     }
   }
 }
