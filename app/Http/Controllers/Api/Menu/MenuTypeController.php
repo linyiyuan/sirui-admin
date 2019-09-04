@@ -41,21 +41,64 @@ class MenuTypeController extends CommonController
     public function index()
     {
         try {
-            $query = MenuType::query();
+            $type = $this->params['type'] ?? '';
 
-            $total = $query->count();
+            switch ($type) {
+                case 'search':
+                    $result = $this->getMenuTypeSearchList();
+                    break;
+                default :
+                    $result = $this->getMenuTypeList();
+            }
 
-            $query = $this->pagingCondition($query, $this->params);
-
-            $menuTypeList = $query->get()->toArray();
-
-            return handleResult(200, [
-                'total' => $total,
-                'list' => $menuTypeList
-            ]);
+            return handleResult(200, $result);
         }catch (\Exception $e) {
             return $this->errorExp($e);
         }
+    }
+
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/9/3
+     * @enumeration:
+     * @return array
+     * @description 获取餐馆分页列表
+     */
+    private function getMenuTypeList()
+    {
+        $query = MenuType::query();
+
+        $total = $query->count();
+
+        $query = $this->pagingCondition($query, $this->params);
+
+        $menuTypeList = $query->get()->toArray();
+
+        return [
+            'total' => $total,
+            'list' => $menuTypeList
+        ];
+    }
+
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/9/3
+     * @enumeration:
+     * @return array
+     * @description 获取餐馆查询列表
+     */
+    private function getMenuTypeSearchList()
+    {
+        $query = MenuType::query();
+
+        $searchList = $query->orderBy('menu_type_id', 'desc')
+            ->pluck('menu_type_name', 'menu_type_id');
+
+        $searchList = $this->combineSearch($searchList);
+
+        return [
+            'list' => $searchList
+        ];
     }
 
     /**
