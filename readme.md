@@ -1,10 +1,10 @@
-# Laravel-admin-template
+# sirui-admin
 
-- v1.0 林益远 2019.5.8 创建
+- v1.0 林益远 2019.9.5 创建
 
 ## 1 前言
 ### 1.1 项目说明
-该项目使用laravel5.6 + Vue2.0 进行开发，构建一个通用后台管理模板
+该项目使用laravel5.6 + Vue2.0 进行开发，构建一个公司内部管理 前端相关文件放置public文件夹里面， 使用nginx指向的时候， 前端指向到/public/sirui-crm/dist文件夹内
 
 ### 1.2 注意事项
 主要的功能有以下:
@@ -13,7 +13,8 @@
 - 权限管理
 - 角色管理
 - 操作日志
-- .....
+- 点餐系统
+- 考勤记录
 
 
 ## 2 如何部署
@@ -40,12 +41,12 @@
 #### 2.2.2 安装步骤
 以下为本项目git仓库地址
 
-	git@gitee.com:linyiyuan/New-SiRuiPortal.git
+	https://github.com/linyiyuan/sirui-admin.git
 	
 <br>
 **第1步：克隆代码**
 
-	git clone git@gitee.com:linyiyuan/New-SiRuiPortal.git
+	git clone https://github.com/linyiyuan/sirui-admin.git
 <br>
 **第2步：安装composer包**
 	
@@ -84,6 +85,15 @@
 至此基本以完成，可以在浏览器中访问域名，如出现`larvel`字符串页面则说明部署完成，后续请根据各需求点作测试
 
 <br>
+
+**第五步：初始化前端**
+
+首先进入public/sirui-crm/config目录下， 配置项目的接口地址 然后在public/sirui-crm目录下按顺序执行以下命令
+
+	npm install
+
+	npm run build
+
 
 #### 2.2.3 Nginx配置参考
 	
