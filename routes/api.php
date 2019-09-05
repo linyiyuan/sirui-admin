@@ -61,6 +61,7 @@ Route::group(['namespace' => 'Api'],function(){
                     Route::resource('menu', 'MenuController');                                          //菜单
                     Route::resource('menu_type', 'MenuTypeController');                                 //菜单分类
                     Route::resource('restaurant', 'RestaurantController');                              //餐馆分类
+                    Route::post('order_menu', 'MenuRecordController@orderMenu');                             //下单操作
                 });
 
             

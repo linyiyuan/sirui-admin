@@ -45,6 +45,7 @@ class Menu extends BaseModels
 
         //设置条件以及排序
         $query = static::_setCondition($query, $condition);
+        $query = static::_baseCondition($query);
         $query = static::_setSort($query, $sort);
 
         return $query;
@@ -148,5 +149,24 @@ class Menu extends BaseModels
         return [
             'list' => array_values($menuTypeList),
         ];
+    }
+
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/9/5
+     * @enumeration:
+     * @param $query
+     * @return \Illuminate\Database\Eloquent\Model
+     * @description 设置公共条件
+     */
+    protected static function _baseCondition($query)
+    {
+        $condition['c.menu_type_status'] = 1;
+        $condition['a.menu_status'] = 1;
+        $condition['b.restaurant_status'] = 1;
+
+        $query = static::_setCondition($query, $condition);
+
+        return $query;
     }
 }

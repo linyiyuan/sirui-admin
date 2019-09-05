@@ -190,7 +190,7 @@
                 this.restaurantDialogVisible = false
               });
             } else if (this.isEdit) {
-              updateRestaurant(this.restaurantFormData.id, { postData: this.restaurantFormData }).then(response => {
+              updateRestaurant(this.restaurantFormData.restaurant_id, { postData: this.restaurantFormData }).then(response => {
                 this.$refs[restaurantForm].resetFields();
                 this.$message({
                   message: '修改成功',

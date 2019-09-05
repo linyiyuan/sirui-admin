@@ -16,8 +16,9 @@ class CreateMenuRecordTable extends Migration
         Schema::create('menu_record', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('uid')->comment('用户ID');
-            $table->integer('menu_id')->comment('菜品关联ID');
+            $table->string('menu_id', 1000)->comment('菜品关联ID');
             $table->integer('amount')->default(0)->comment('点餐价格');
+            $table->tinyInteger('status')->default(1)->comment('订单状态: 1:有效 0: 失效');
             $table->date('addDate')->comment('点餐日期');
         });
     }

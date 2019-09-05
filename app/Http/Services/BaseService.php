@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Redis;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Http\Controllers\Api\ServerController;
 
 /**
  * Class BaseService

@@ -16,7 +16,7 @@
                 :data="list"
                 style="width: 100%;"
                 v-loading="listLoading" border>
-        <el-table-column sortable label="ID" prop="menuTypename" width="200" align="center">
+        <el-table-column  sortable label="ID" prop="menu_type_id" width="200" align="center">
           <template slot-scope="scope">{{scope.row.menu_type_id}}</template>
         </el-table-column>
         <el-table-column  label="分类名" width="500" align="center">
@@ -190,7 +190,7 @@
                 this.menuTypeDialogVisible = false
               });
             } else if (this.isEdit) {
-              updateMenuType(this.menuTypeFormData.id, { postData: this.menuTypeFormData }).then(response => {
+              updateMenuType(this.menuTypeFormData.menu_type_id, { postData: this.menuTypeFormData }).then(response => {
                 this.$refs[menuTypeForm].resetFields();
                 this.$message({
                   message: '修改成功',

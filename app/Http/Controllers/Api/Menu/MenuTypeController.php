@@ -92,7 +92,8 @@ class MenuTypeController extends CommonController
         $query = MenuType::query();
 
         $searchList = $query->orderBy('menu_type_id', 'desc')
-            ->pluck('menu_type_name', 'menu_type_id');
+                             ->where('menu_type_status', 1)
+                             ->pluck('menu_type_name', 'menu_type_id');
 
         $searchList = $this->combineSearch($searchList);
 

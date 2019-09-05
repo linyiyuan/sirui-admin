@@ -91,6 +91,7 @@ class RestaurantController extends CommonController
         $query = Restaurant::query();
 
         $searchList = $query->orderBy('restaurant_id', 'desc')
+                            ->where('restaurant_status', 1)
                             ->pluck('restaurant_name', 'restaurant_id');
 
         $searchList = $this->combineSearch($searchList);

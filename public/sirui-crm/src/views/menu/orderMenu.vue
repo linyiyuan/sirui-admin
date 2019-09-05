@@ -67,6 +67,7 @@
 </template>
 <script>
 import { menuList, createMenu, updateMenu, deleteMenu } from '@/api/menu/menu'
+import { orderMenu } from '@/api/menu/menu'
 import { restaurantList } from '@/api/menu/restaurant'
 import { menuTypeList } from '@/api/menu/menuType'
 import { formatDate } from '@/utils/date';
@@ -123,6 +124,7 @@ export default {
     },
     handleSendOrderData() {
 
+        console.log(this.orderMenuFormData)
     },
     selectMenu(menuValue) {
       if (this.orderMenuFormData.menu_id.indexOf(menuValue.menu_id) != -1) {
