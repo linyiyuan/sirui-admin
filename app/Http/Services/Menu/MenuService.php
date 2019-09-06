@@ -1,6 +1,9 @@
 <?php
-namespace App\Http\Services;
+namespace App\Http\Services\Menu;
 
+use App\Http\Services\BaseService;
+use App\Models\Menu\Menu;
+use App\Models\Menu\MenuRecord;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\URL;
@@ -17,19 +20,88 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class MenuService extends BaseService
 {
 
-    public function orderMenu($menu_id, $amount)
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/9/6
+     * @enumeration:
+     * @param $data
+     * @return bool
+     * @throws \Exception
+     * @description 用户点餐操作
+     */
+    public function orderMenu($data)
     {
-        if (empty($menu_id)) return false;
+        if (empty($data)) return false;
 
-        //获取当前日期
-        $nowDate = date('Y-m-d');
-
-        //获取当前用户
+        //获取当前用户信息
         $user = JWTAuth::parseToken()->toUser();
+        $uid = $user->id;
 
+        //获取下单商品信息
+        $amount = $data['amount'];
+        $addDate = $data['addDate'];
+        $menu_id = json_decode($data['menu_id'], true);
+        $menuInfo = Menu::getMenuById($menu_id);
 
+        //检查金额
+        if(!$this->checkoutMenuAmount($menuInfo, $amount)) $this->throwExp(400, '菜品金额与下单金额核实不正确');
 
+        //获取订单信息
+        $menuRecord = MenuRecord::getMenuRecordByAddDate($addDate);
 
+        $data['uid'] = $uid;
+        $data['addDate'] = $addDate;
+        $data['status'] = 1;
 
+        if (empty($menuRecord)) {
+            $result = MenuRecord::setMenuRecord($data);
+        }else{
+            $result = MenuRecord::setMenuRecord($data, $menuRecord['id']);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/9/6
+     * @enumeration:
+     * @param $menuInfo
+     * @param $amount
+     * @return bool
+     * @description 检查下单金额
+     */
+    public function checkoutMenuAmount($menuInfo, $amount)
+    {
+        if (empty($menuInfo)) return false;
+
+        $menuRealAmount = array_column($menuInfo, 'menu_amount');
+        $menuRealAmount = array_sum($menuRealAmount);
+
+        if ($amount != $menuRealAmount) return false;
+
+        return true;
+    }
+
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/9/6
+     * @enumeration:
+     * @param $uid
+     * @return array
+     * @description 根据用户ID获取相对应菜单记录
+     */
+    public function getMenuByUid($uid)
+    {
+        if (empty($uid)) return [];
+
+        $list = [];
+        $menuRecordList = MenuRecord::getMenuRecordByUid($uid);
+
+        foreach ($menuRecordList as $menuRecord) {
+            $menuList = array_column($menuRecord->menus->toArray(), 'menu_name');
+            $list[$menuRecord->addDate] = join('+', $menuList);
+        }
+        return $list;
     }
 }

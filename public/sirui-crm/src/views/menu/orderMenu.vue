@@ -6,17 +6,17 @@
       </el-button>
     </el-card>
     <div class="table-container">
-      <el-calendar>
+      <el-calendar :range="['2019-09-02', '2019-09-08']">
         <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
         <template slot="dateCell" slot-scope="{date, data}">
-          <p :class="data.isSelected ? 'is-selected' : ''" v-if="data.day < nowDate" style="color: #c0c4cc">
+          <p :class="data.isSelected ? 'is-selected' : ''" v-if="data.day < nowDate" style="color: #c0c4cc; height:400px">
             {{ data.day.split('-').slice(1).join('-') }} {{ data.day == nowDate ? '✔️' : ''}}
-            <br><br>
+            <br>
             <del>{{ list[data.day]}}</del>
           </p>
           <p :class="data.isSelected ? 'is-selected' : ''" v-if="data.day >= nowDate" @click="addMenu(data,day)">
             {{ data.day.split('-').slice(1).join('-') }} {{ data.day == nowDate ? '✔️' : ''}}
-            <br><br>
+            <br>
             {{ list[data.day]}}
           </p>
         </template>
@@ -67,7 +67,7 @@
 </template>
 <script>
 import { menuList, createMenu, updateMenu, deleteMenu } from '@/api/menu/menu'
-import { orderMenu } from '@/api/menu/menu'
+import { orderMenu, getMenuRecordByUid } from '@/api/menu/menuRecord'
 import { restaurantList } from '@/api/menu/restaurant'
 import { menuTypeList } from '@/api/menu/menuType'
 import { formatDate } from '@/utils/date';
@@ -100,17 +100,9 @@ export default {
   created() {
     let nowDate = new Date();
     this.nowDate = formatDate(nowDate, 'yyyy-MM-dd')
-
-    this.list['2019-08-28'] = '青椒炒肉丝'
-    this.list['2019-08-29'] = '酸辣土豆丝'
-    this.list['2019-08-30'] = '辣子鸡饭'
-    this.list['2019-08-31'] = '辣子鸡饭'
-    this.list['2019-09-01'] = '水煮鱼饭'
-    this.list['2019-09-02'] = '麻婆豆腐'
-    this.list['2019-09-03'] = '麻婆豆腐'
-
     this.getMenuList();
     this.getRestaurantSearchList();
+    this.getMenuRecordByUid();
   },
   filters: {
     formatLoginTime(time) {
@@ -124,7 +116,7 @@ export default {
     },
     handleSendOrderData() {
 
-        console.log(this.orderMenuFormData)
+        // console.log(this.orderMenuFormData)
     },
     selectMenu(menuValue) {
       if (this.orderMenuFormData.menu_id.indexOf(menuValue.menu_id) != -1) {
@@ -155,6 +147,14 @@ export default {
       menuList(this.listQuery).then(response => {
         this.$nextTick(() => {
           this.menuList = response.data.list;
+        })
+
+      });
+    },
+    getMenuRecordByUid() {
+      getMenuRecordByUid().then(response => {
+        this.$nextTick(() => {
+          this.list = response.data.list;
         })
 
       });

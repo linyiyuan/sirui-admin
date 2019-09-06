@@ -45,7 +45,6 @@ class Menu extends BaseModels
 
         //设置条件以及排序
         $query = static::_setCondition($query, $condition);
-        $query = static::_baseCondition($query);
         $query = static::_setSort($query, $sort);
 
         return $query;
@@ -77,6 +76,31 @@ class Menu extends BaseModels
         if (!$menuObj->save()) return false;
 
         return true;
+    }
+
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/9/6
+     * @enumeration:
+     * @param $menuId
+     * @return array
+     * @description 根据菜品ID获取菜品
+     */
+    public static function getMenuById($menuId)
+    {
+        if (empty($menuId)) return [];
+
+        $query = Menu::getMenu();
+
+        if(is_array($menuId)) {
+            $query->whereIn('menu_id', $menuId);
+        }else{
+            $query->where('menu_id', $menuId);
+        }
+
+        $menuList = $query->get()->toArray();
+
+        return $menuList;
     }
 
     /**
@@ -122,6 +146,7 @@ class Menu extends BaseModels
 
         $condition['a.restaurant_id'] = $restaurant_id;
         $query = static::getMenu($condition);
+        $query = static::_baseCondition($query);
 
         $query = $query->from('menu as a')
                         ->select('a.menu_id', 'a.menu_name', 'a.menu_amount', 'a.menu_status', 'a.created_at', 'a.updated_at',

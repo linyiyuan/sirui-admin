@@ -120,6 +120,12 @@ export const asyncRouterMap = [{
         component: () => import('@/views/menu/menuManager'),
         meta: { title: '菜品管理', icon: 'food and beverage' }
       },
+      {
+        path: 'menuConfig',
+        name: 'Api:menu/menuConfig',
+        component: () => import('@/views/menu/menuConfig'),
+        meta: { title: '参数配置', icon: 'tools' }
+      },
     ]
   },
   {

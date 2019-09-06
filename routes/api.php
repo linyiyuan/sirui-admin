@@ -60,11 +60,12 @@ Route::group(['namespace' => 'Api'],function(){
                 Route::group(['prefix' => 'menu', 'namespace' => 'Menu'], function() {
                     Route::resource('menu', 'MenuController');                                          //菜单
                     Route::resource('menu_type', 'MenuTypeController');                                 //菜单分类
+                    Route::resource('menu_config', 'MenuConfigController');                             //点餐配置
                     Route::resource('restaurant', 'RestaurantController');                              //餐馆分类
                     Route::post('order_menu', 'MenuRecordController@orderMenu');                             //下单操作
+                    Route::get('get_menu_record_by_uid', 'MenuRecordController@getMenuRecordListByUid');     //根据UID获取订单记录
                 });
 
-            
                 Route::get('test', 'TestController@test'); //测试接口
 
             });
