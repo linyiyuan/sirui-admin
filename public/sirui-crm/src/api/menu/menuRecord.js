@@ -6,3 +6,20 @@ export function getMenuRecordByUid(params) {
     params:params
   })
 }
+
+export function getMenuRecordByType(params) {
+  return request({
+    url:'/menu/get_menu_record_by_type',
+    method:'get',
+    params:params
+  })
+}
+
+export function orderMenu(params) {
+  return request({
+    url:'/menu/order_menu',
+    method:'post',
+    data:params
+  })
+}
+

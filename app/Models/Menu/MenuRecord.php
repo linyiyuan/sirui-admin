@@ -4,6 +4,7 @@ namespace App\Models\Menu;
 
 use App\Models\BaseModels;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class MenuRecord
@@ -75,18 +76,34 @@ class MenuRecord extends BaseModels
     {
         if (empty($data)) return false;
 
+        $menu = $data['menu_id'];
+        unset($data['menu_id']);
+
         if (intval($id) > 0) {
-            $menuObj = static::find($id);
-            if (empty($menuObj)) return false;
+            static::query()->where('id', $id)
+                            ->update($data);
+
+            DB::table('menu_record_has_menu')->where('menu_record_id', $id)->delete();
+
+            foreach ($menu as $key) {
+                DB::table('menu_record_has_menu')->insert([
+                    'menu_record_id' => $id,
+                    'menu_id' => $key,
+                ]);
+            }
+
         }else{
-            $menuObj = new static();
-        }
+            $insertId = static::query()->where('id', $id)
+                                ->insertGetId($data);
 
-        foreach ($data as $key => $value) {
-            $menuObj->$key = $value;
-        }
+            foreach ($menu as $key) {
+                DB::table('menu_record_has_menu')->insert([
+                    'menu_record_id' => $insertId,
+                    'menu_id' => $key,
+                ]);
+            }
 
-        if (!$menuObj->save()) return false;
+        }
 
         return true;
     }
@@ -96,13 +113,17 @@ class MenuRecord extends BaseModels
      * @Date: 2019/9/6
      * @enumeration:
      * @param $addDate
+     * @param $type
      * @return array
-     * @description 根据日期获取下单记录
+     * @description 根据日期以及时间点获取下单记录
      */
-    public static function getMenuRecordByAddDate($addDate)
+    public static function getMenuRecordByType($addDate, $type)
     {
         if (empty($addDate)) return [];
+        if (empty($type)) return [];
+
         $condition['addDate'] = $addDate;
+        $condition['type'] = $type;
 
         $query = static::getMenuRecord($condition);
         $menuRecord = $query->first();

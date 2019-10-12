@@ -4,10 +4,6 @@ namespace App\Http\Services\Menu;
 use App\Http\Services\BaseService;
 use App\Models\Menu\Menu;
 use App\Models\Menu\MenuRecord;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
@@ -40,14 +36,13 @@ class MenuService extends BaseService
         //获取下单商品信息
         $amount = $data['amount'];
         $addDate = $data['addDate'];
-        $menu_id = json_decode($data['menu_id'], true);
-        $menuInfo = Menu::getMenuById($menu_id);
+        $menuInfo = Menu::getMenuById($data['menu_id']);
 
         //检查金额
         if(!$this->checkoutMenuAmount($menuInfo, $amount)) $this->throwExp(400, '菜品金额与下单金额核实不正确');
 
         //获取订单信息
-        $menuRecord = MenuRecord::getMenuRecordByAddDate($addDate);
+        $menuRecord = MenuRecord::getMenuRecordByType($addDate, $data['type']);
 
         $data['uid'] = $uid;
         $data['addDate'] = $addDate;
@@ -95,13 +90,42 @@ class MenuService extends BaseService
     {
         if (empty($uid)) return [];
 
+        $type = [
+            '1' => '午餐',
+            '2' => '晚餐'
+        ];
+
         $list = [];
         $menuRecordList = MenuRecord::getMenuRecordByUid($uid);
 
         foreach ($menuRecordList as $menuRecord) {
             $menuList = array_column($menuRecord->menus->toArray(), 'menu_name');
-            $list[$menuRecord->addDate] = join('+', $menuList);
+
+            if (array_key_exists($menuRecord->type, $type))  $list[$menuRecord->addDate][$type[$menuRecord->type]] = join('+', $menuList);
         }
+        return $list;
+    }
+
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/9/6
+     * @enumeration:
+     * @param $data
+     * @return array
+     * @description 根据点餐时间点以及点餐日期获取相应点餐记录
+     */
+    public function getMenuRecordByType($data)
+    {
+        if (empty($data)) return [];
+
+        $list = [];
+        $menuRecordList = MenuRecord::getMenuRecordByType($data['addDate'], $data['type']);
+        if (empty($menuRecordList)) return [];
+
+        $list['amount'] = $menuRecordList->amount;
+        $list['menu'] = array_column($menuRecordList->menus->toArray(), 'menu_id');
+        $list['menuSelected'] = array_column($menuRecordList->menus->toArray(), 'menu_name', 'menu_id');
+
         return $list;
     }
 }

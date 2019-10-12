@@ -9,6 +9,26 @@
         </el-switch>
         <el-divider></el-divider>
       </el-form-item>
+      <el-form-item label="早餐点餐开关：">
+        <el-switch v-model="menuConfigData.breakfast_switch" :active-value=1 :inactive-value=0 active-color="#13ce66" inactive-color="#ff4949" active-text="开启" inactive-text="关闭">
+        </el-switch>
+        <el-divider></el-divider>
+      </el-form-item>
+      <el-form-item label="午餐点餐开关：">
+        <el-switch v-model="menuConfigData.lunch_switch" :active-value=1 :inactive-value=0 active-color="#13ce66" inactive-color="#ff4949" active-text="开启" inactive-text="关闭">
+        </el-switch>
+        <el-divider></el-divider>
+      </el-form-item>
+      <el-form-item label="晚餐点餐开关：">
+        <el-switch v-model="menuConfigData.dinner_switch" :active-value=1 :inactive-value=0 active-color="#13ce66" inactive-color="#ff4949" active-text="开启" inactive-text="关闭">
+        </el-switch>
+        <el-divider></el-divider>
+      </el-form-item>
+      <el-form-item label="下午茶点餐开关：">
+        <el-switch v-model="menuConfigData.snack_switch" :active-value=1 :inactive-value=0 active-color="#13ce66" inactive-color="#ff4949" active-text="开启" inactive-text="关闭">
+        </el-switch>
+        <el-divider></el-divider>
+      </el-form-item>
       <el-form-item label="点菜可选时间范围：">
         <el-input v-model="menuConfigData.time_range" class="input-width">
           <template slot="append">周</template>
@@ -22,6 +42,11 @@
         </el-input>
         <el-button type="primary">确定</el-button>
         <el-divider></el-divider>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          @click="confirm('orderSettingForm')"
+          type="primary">提交</el-button>
       </el-form-item>
     </el-form>
   </el-card>
