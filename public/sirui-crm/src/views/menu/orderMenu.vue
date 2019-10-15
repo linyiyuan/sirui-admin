@@ -222,9 +222,14 @@ export default {
     clearMenuOrder() {
       this.orderMenuFormData.menu_id = [];
       this.orderMenuFormData.amount = 0;
+    },
+    clearMenuOrder() {
+      this.orderMenuFormData.menu_id = [];
+      this.orderMenuFormData.amount = 0;
       this.menuSelected = [];
-      console.log(this.menuSelected)
+      console.log(this.menuSelected);
     }
+
   }
 }
 
