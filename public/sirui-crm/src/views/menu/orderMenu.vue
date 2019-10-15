@@ -68,7 +68,7 @@
             <i class="el-icon-tickets"></i>
             <span>订单信息</span>
             <el-form-item label="已选择的菜品：">
-              <span v-for="item in menuSelected" style="font-size: 20px; margin-right: 20px">{{ item }} + </span>
+              <span v-for="item in menuSelected" style="font-size: 20px; margin-right: 20px"> <span v-if="item != '' ">{{ item }} +</span> </span>
             </el-form-item>
             <p style="float: right; margin-right: 120px">
               金额小计： <span style="color: red;font-size: 25px">￥ {{ orderMenuFormData.amount }}</span>

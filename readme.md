@@ -4,7 +4,7 @@
 
 ## 1 前言
 ### 1.1 项目说明
-该项目使用laravel5.6 + Vue2.0 进行开发，构建一个公司内部管理 前端相关文件放置public文件夹里面， 使用nginx指向的时候， 前端指向到/public/sirui-crm/dist文件夹内
+该项目使用laravel5.6 + Vue2.0 进行开发，构建一个公司内部管理系统 前端采用ElementUI + Vue构建的一个前端应用，放置在public文件夹里面， 使用nginx指向的时候， 前端指向到/public/sirui-crm/dist文件夹内
 
 ### 1.2 注意事项
 主要的功能有以下:
