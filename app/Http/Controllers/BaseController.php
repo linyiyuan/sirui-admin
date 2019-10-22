@@ -58,8 +58,6 @@ class BaseController extends Controller
             ]
         ];
 
-        $errTemplate = "\r\nURL::". URL::full() ."\r\nPARAMS::". json_encode(Input::all()) ."\r\n" . "RESPONSE::" . json_encode($data) ."\r\n";
-
         return Response()->json($data);
     }
 
