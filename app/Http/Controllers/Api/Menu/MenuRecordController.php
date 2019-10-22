@@ -133,4 +133,39 @@ class MenuRecordController extends CommonController
         }
     }
 
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/10/15
+     * @enumeration:
+     * @return \Illuminate\Http\JsonResponse
+     * @description 取消点餐
+     */
+    public function removeMenuOrder()
+    {
+        try {
+            $data = [
+                'addDate' => $this->params['addDate'] ?? '',
+                'type' => $this->params['type'] ?? '',
+            ];
+
+            $rules = [
+                'addDate' => 'required',
+                'type' => 'required',
+            ];
+
+            $message = [
+                'addDate.required'  => '日期不能为空',
+                'type.required'  => ' 点餐时间类型为空',
+            ];
+
+            $this->verifyParams($data, $rules, $message);
+
+           MenuService::getInstance()->removeMenuOrder($data);
+
+            return handleResult(200, '取消点餐成功');
+        }catch (\Exception $e) {
+            return $this->errorExp($e);
+        }
+    }
+
 }

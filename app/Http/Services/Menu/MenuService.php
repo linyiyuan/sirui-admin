@@ -128,4 +128,24 @@ class MenuService extends BaseService
 
         return $list;
     }
+
+    /**
+     * @Author YiYuan-LIn
+     * @Date: 2019/10/15
+     * @enumeration:
+     * @param $data
+     * @return array
+     * @description 取消点餐
+     */
+    public function removeMenuOrder($data)
+    {
+        if (empty($data)) return [];
+
+        $menuRecordQuery = MenuRecord::query();
+
+        $menuRecordQuery->where('add_date', $data['addDate']);
+        $menuRecordQuery->where('type', $data['type']);
+
+        $menuRecordQuery->delete();
+    }
 }

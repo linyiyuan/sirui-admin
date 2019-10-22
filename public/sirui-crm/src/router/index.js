@@ -129,6 +129,27 @@ export const asyncRouterMap = [{
     ]
   },
   {
+    path: '/game',
+    component: Layout,
+    name: 'Api:game',
+    redirect: '/game/gameUser',
+    alwaysShow: true,
+    meta: { title: '游戏用户', icon: 'users' },
+    children: [{
+        path: 'gameUser',
+        name: 'Api:game/gameUser',
+        component: () => import('@/views/game/gameUser'),
+        meta: { title: '游戏用户', icon: 'users' }
+      },
+      {
+        path: 'rechargeRank',
+        name: 'Api:game/rechargeRank',
+        component: () => import('@/views/game/rechargeRank'),
+        meta: { title: '充值排行', icon: 'rank' }
+      },
+    ]
+  },
+  {
     path: '/system',
     component: Layout,
     name: 'Api:system',

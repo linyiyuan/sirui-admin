@@ -63,8 +63,16 @@ Route::group(['namespace' => 'Api'],function(){
                     Route::resource('menu_config', 'MenuConfigController');                             //点餐配置
                     Route::resource('restaurant', 'RestaurantController');                              //餐馆分类
                     Route::post('order_menu', 'MenuRecordController@orderMenu');                             //下单操作
+                    Route::delete('remove_menu_order', 'MenuRecordController@removeMenuOrder');                //下单操作
                     Route::get('get_menu_record_by_uid', 'MenuRecordController@getMenuRecordListByUid');     //根据UID获取订单记录
                     Route::get('get_menu_record_by_type', 'MenuRecordController@getMenuRecordListByType');   //根据点餐时间类型获取订单记录
+                });
+
+                //系统管理
+                Route::group(['prefix' => 'game', 'namespace' => 'Game'], function() {
+                    Route::get('get_game_user_list', 'GameController@getGameUserList');                     //获取游戏用户列表
+                    Route::get('get_recharge_rank', 'GameController@getRechargeRank');              //获取用户充值信息
+                    Route::get('get_order_info_by_account', 'GameController@getGameUserRechargeInfo');      //获取用户充值信息
                 });
 
                 Route::get('test', 'TestController@test'); //测试接口

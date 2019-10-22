@@ -68,7 +68,7 @@
             <i class="el-icon-tickets"></i>
             <span>订单信息</span>
             <el-form-item label="已选择的菜品：">
-              <span v-for="item in menuSelected" style="font-size: 20px; margin-right: 20px"> <span v-if="item != '' ">{{ item }} +</span> </span>
+              <span v-for="item in menuSelected" style="font-size: 20px; margin-right: 20px">{{ item }} +</span>
             </el-form-item>
             <p style="float: right; margin-right: 120px">
               金额小计： <span style="color: red;font-size: 25px">￥ {{ orderMenuFormData.amount }}</span>
@@ -77,7 +77,8 @@
         </el-card>
       </el-form>
       <div slot="footer">
-        <el-button size="small" type="warning" @click="clearMenuOrder()">取消所选项</el-button>
+        <el-button size="small" type="danger" @click="deleteMenuOrder()">取消点餐</el-button>
+        <el-button size="small" type="warning" @click="clearMenuOrder()">取消所选</el-button>
         <el-button size="small" @click="addMenuDialogVisible = false">取 消</el-button>
         <el-button size="small" type="primary" @click="handleSendOrderData()">下 单</el-button>
       </div>
@@ -86,7 +87,7 @@
 </template>
 <script>
 import { menuList, createMenu, updateMenu, deleteMenu } from '@/api/menu/menu'
-import { orderMenu, getMenuRecordByUid, getMenuRecordByType } from '@/api/menu/menuRecord'
+import { orderMenu, getMenuRecordByUid, getMenuRecordByType, removeMenuOrder } from '@/api/menu/menuRecord'
 import { restaurantList } from '@/api/menu/restaurant'
 import { menuTypeList } from '@/api/menu/menuType'
 import { formatDate } from '@/utils/date';
@@ -188,7 +189,6 @@ export default {
         this.$nextTick(() => {
           this.list = response.data.list;
         })
-
       });
     },
     getMenuRecordByType(params) {
@@ -203,7 +203,6 @@ export default {
           }
 
         })
-
       });
     },
     getRestaurantSearchList() {
@@ -222,14 +221,12 @@ export default {
     clearMenuOrder() {
       this.orderMenuFormData.menu_id = [];
       this.orderMenuFormData.amount = 0;
+      this.menuSelected = {};
     },
-    clearMenuOrder() {
-      this.orderMenuFormData.menu_id = [];
-      this.orderMenuFormData.amount = 0;
-      this.menuSelected = [];
-      console.log(this.menuSelected);
+    deleteMenuOrder() {
+      this.orderMenuFormData.addDate = this.date
+        console.log(this.orderMenuFormData)
     }
-
   }
 }
 

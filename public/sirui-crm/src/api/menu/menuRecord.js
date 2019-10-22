@@ -23,3 +23,11 @@ export function orderMenu(params) {
   })
 }
 
+export function removeMenuOrder(params) {
+  return request({
+    url:'/menu/remove_menu_order',
+    method:'delete',
+    data:params
+  })
+}
+
