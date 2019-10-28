@@ -143,7 +143,7 @@ class MenuService extends BaseService
 
         $menuRecordQuery = MenuRecord::query();
 
-        $menuRecordQuery->where('add_date', $data['addDate']);
+        $menuRecordQuery->where('addDate', $data['addDate']);
         $menuRecordQuery->where('type', $data['type']);
 
         $menuRecordQuery->delete();

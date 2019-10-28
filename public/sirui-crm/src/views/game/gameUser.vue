@@ -28,8 +28,11 @@
         <el-table-column sortable label="ID" prop="id" width="200" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="账号名" align="center">
+        <el-table-column label="账号名" align="center" width="160">
           <template slot-scope="scope">{{scope.row.account}}</template>
+        </el-table-column>
+        <el-table-column label="充值总额" align="center" width="140">
+          <template slot-scope="scope">{{scope.row.amount}}</template>
         </el-table-column>
         <el-table-column sortable label="手机号码" width="120" prop="phone_num" align="center">
           <template slot-scope="scope">{{scope.row.phone_num}}</template>

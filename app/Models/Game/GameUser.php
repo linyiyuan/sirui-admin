@@ -32,7 +32,8 @@ class GameUser extends BaseModels
         $query = static::query();
         $total = $query->count();
 
-        $query = static::_pagingCondition($query, $pageInfo['cur_page'], $pageInfo['page_size']);
+        $query = $query->orderBy('amount', 'desc');
+//        $query = static::_pagingCondition($query, $pageInfo['cur_page'], $pageInfo['page_size']);
         if (!empty($account)) $query->where('account', $account);
 
         return [

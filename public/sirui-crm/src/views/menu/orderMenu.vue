@@ -225,7 +225,27 @@ export default {
     },
     deleteMenuOrder() {
       this.orderMenuFormData.addDate = this.date
-        console.log(this.orderMenuFormData)
+      removeMenuOrder({ type: this.orderMenuFormData.type, addDate: this.orderMenuFormData.addDate }).then(response => {
+        if (response.errorCode == 200) {
+          this.$message({
+            message: '取消点餐成功',
+            type: 'success',
+            duration: 1000
+          });
+          this.getMenuRecordByUid();
+          this.orderMenuFormData.menu_id = [];
+          this.orderMenuFormData.amount = 0;
+          this.menuSelected = {};
+           this.addMenuDialogVisible = false
+        } else {
+          this.$message({
+            message: '取消点餐失败',
+            type: 'error',
+            duration: 1000
+          });
+        }
+
+      });
     }
   }
 }
