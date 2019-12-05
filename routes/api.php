@@ -75,6 +75,11 @@ Route::group(['namespace' => 'Api'],function(){
                     Route::get('get_order_info_by_account', 'GameController@getGameUserRechargeInfo');      //获取用户充值信息
                 });
 
+                //游戏中心
+                Route::group(['prefix' => 'passport', 'namespace' => 'Passport'], function() {
+                    Route::resource('version_review', 'VersionReviewController');                     //获取游戏用户列表
+                });
+
                 Route::get('test', 'TestController@test'); //测试接口
 
             });

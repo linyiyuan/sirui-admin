@@ -149,6 +149,21 @@ export const asyncRouterMap = [{
       },
     ]
   },
+    {
+    path: '/passport',
+    component: Layout,
+    name: 'Api:passport',
+    redirect: '/passport/version_review',
+    alwaysShow: true,
+    meta: { title: '游戏中心', icon: 'passport' },
+    children: [{
+        path: 'version_review',
+        name: 'Api:passport/versionRreview',
+        component: () => import('@/views/passport/versionReview'),
+        meta: { title: '审核开关', icon: 'switch' }
+      },
+    ]
+  },
   {
     path: '/system',
     component: Layout,
