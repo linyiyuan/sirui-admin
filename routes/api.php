@@ -80,7 +80,9 @@ Route::group(['namespace' => 'Api'],function(){
                     Route::resource('version_review', 'VersionReviewController');                     //获取游戏用户列表
                     Route::get('agent_matching_record', 'AgentMatchingController@agentMatchingRecord');     //获取匹配记录
                     Route::get('agent_matching', 'AgentMatchingController@agentMatching');                  //获取匹配信息
-                    Route::resource('common_game', 'CommonGameController');                             //游戏设置
+                    Route::resource('common_game', 'CommonGameController');                            //游戏设置
+                    Route::resource('common_platform', 'CommonPlatformController');                    //游戏设置
+                    Route::resource('common_channel', 'CommonChannelController');                      //游戏设置
                 });
 
                 Route::get('test', 'TestController@test'); //测试接口
