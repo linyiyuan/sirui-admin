@@ -106,7 +106,6 @@ class CommonChannelController extends CommonController
             $postData = $this->params['postData'] ?? $this->throwExp(400, '请求参数为空');
 
             $data = [
-                'id' => $id,
                 'platform_id' => $postData['platform_id'] ?? '',
                 'resource_id' => $postData['resource_id'] ?? '',
                 'channel_id' => $postData['channel_id'] ?? '',
@@ -114,7 +113,6 @@ class CommonChannelController extends CommonController
                 'api_url' => $postData['api_url'] ?? '',
             ];
             $rules = [
-                'id'  => 'required',
                 'platform_id'  => 'required',
                 'resource_id'  => 'required',
                 'channel_id'  => 'required',
@@ -122,7 +120,6 @@ class CommonChannelController extends CommonController
                 'api_url'  => 'required',
             ];
             $message = [
-                'id.required' => 'id 不能为空',
                 'platform_id.required' => 'platform_id 不能为空',
                 'resource_id.required' => 'resource_id 不能为空',
                 'channel_id.required' => 'channel_id 不能为空',
@@ -131,7 +128,7 @@ class CommonChannelController extends CommonController
             ];
             $this->verifyParams($data, $rules, $message);
 
-            $commonChannel = new CommonChannel();
+            $commonChannel = CommonChannel::query()->where('resource_id', $data['resource_id'])->first();
             $commonChannel ->platform_id = $data['platform_id'];
             $commonChannel ->resource_id = $data['resource_id'];
             $commonChannel ->channel_id = $data['channel_id'];

@@ -13,4 +13,6 @@ class CommonChannel extends Model
     protected $table = 'common_channel';
 
     public $timestamps = true;
+
+    public $primaryKey = 'resource_id';
 }

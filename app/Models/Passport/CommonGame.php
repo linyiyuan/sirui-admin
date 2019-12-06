@@ -13,4 +13,6 @@ class CommonGame extends Model
     protected $table = 'common_game';
 
     public $timestamps = true;
+
+    public $primaryKey = 'game_id';
 }

@@ -32,8 +32,6 @@ class CommonPlatformController extends CommonController
             $query = CommonPlatform::query();
 
             $total = $query->count();
-
-            $query = $this->pagingCondition($query, $this->params);
             $list = $query->get()->toArray();
 
             return handleResult(200, [
@@ -100,26 +98,23 @@ class CommonPlatformController extends CommonController
             $postData = $this->params['postData'] ?? $this->throwExp(400, '请求参数为空');
 
             $data = [
-                'id' => $id,
                 'game_id' => $postData['game_id'] ?? '',
                 'platform_id' => $postData['platform_id'] ?? '',
                 'platform_name' => $postData['platform_name'] ?? '',
             ];
             $rules = [
-                'id'  => 'required',
                 'game_id'  => 'required',
                 'platform_id'  => 'required',
                 'platform_name'  => 'required',
             ];
             $message = [
-                'id.required' => 'game_id 不能为空',
                 'game_id.required' => 'game_id 不能为空',
                 'platform_id.required' => 'platform_id 不能为空',
                 'platform_name.required' => 'platform_name 不能为空',
             ];
             $this->verifyParams($data, $rules, $message);
 
-            $commonPlatform = CommonPlatform::find($id);
+            $commonPlatform = CommonPlatform::query()->where('platform_id', $data['platform_id'])->first();
             if (empty($commonPlatform)) $this->throwExp(400, '查询不到指定数据');
             $commonPlatform ->game_id = $data['game_id'];
             $commonPlatform ->platform_id = $data['platform_id'];

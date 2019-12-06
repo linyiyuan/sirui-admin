@@ -13,4 +13,6 @@ class CommonPlatform extends Model
     protected $table = 'common_platform';
 
     public $timestamps = true;
+
+    public $primaryKey = 'platform_id';
 }

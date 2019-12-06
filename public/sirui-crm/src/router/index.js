@@ -175,6 +175,19 @@ export const asyncRouterMap = [{
         component: () => import('@/views/passport/versionReview'),
         meta: { title: '审核开关', icon: 'switch' }
       },
+      {
+        path: 'common_game',
+        name: 'Api:passport/commonGame',
+        component: () => import('@/views/passport/commonGame'),
+        meta: { title: 'OPPO服', icon: 'oppo' }
+      },
+      {
+        hidden: true,
+        path: 'common_channel',
+        name: 'Api:passport/commonChannel',
+        component: () => import('@/views/passport/commonChannel'),
+        meta: { title: 'OPPO服渠道', icon: 'oppo' }
+      },
     ]
   },
   {

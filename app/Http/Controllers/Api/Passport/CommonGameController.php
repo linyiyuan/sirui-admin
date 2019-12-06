@@ -61,15 +61,18 @@ class CommonGameController extends CommonController
                 'game_id' => $postData['game_id'] ?? '',
                 'game_name' => $postData['game_name'] ?? '',
                 'game_icon' => $postData['game_icon'] ?? '',
+                'game_secret' => $postData['game_secret'] ?? '',
                 'game_status' => $postData['game_status'] ?? 0,
             ];
             $rules = [
                 'game_id'  => 'required',
                 'game_name'  => 'required',
+                'game_secret'  => 'required',
             ];
             $message = [
                 'game_id.required' => 'game_id 不能为空',
                 'game_name.required' => 'game_name 不能为空',
+                'game_secret.required' => 'game_secret 不能为空',
             ];
             $this->verifyParams($data, $rules, $message);
 
@@ -77,6 +80,7 @@ class CommonGameController extends CommonController
             $commonGame ->game_id = $data['game_id'];
             $commonGame ->game_name = $data['game_name'];
             $commonGame ->game_icon = $data['game_icon'];
+            $commonGame ->game_secret = $data['game_secret'];
             $commonGame ->game_status = $data['game_status'];
 
             if (!$commonGame ->save()) $this->throwExp(400, '添加失败');
@@ -100,30 +104,26 @@ class CommonGameController extends CommonController
             $postData = $this->params['postData'] ?? $this->throwExp(400, '请求参数为空');
 
             $data = [
-                'id' => $postData['id'] ?? '',
                 'game_id' => $postData['game_id'] ?? '',
                 'game_name' => $postData['game_name'] ?? '',
                 'game_icon' => $postData['game_icon'] ?? '',
                 'game_status' => $postData['game_status'] ?? 0,
             ];
             $rules = [
-                'id'  => 'required',
                 'game_id'  => 'required',
                 'game_name'  => 'required',
             ];
             $message = [
-                'id.required' => 'id 不能为空',
                 'game_id.required' => 'game_id 不能为空',
                 'game_name.required' => 'game_name 不能为空',
             ];
             $this->verifyParams($data, $rules, $message);
 
-            $commonGame = CommonGame::find($id);
+            $commonGame = CommonGame::query()->where('game_id', $data['game_id'])->first();
             if (empty($commonGame)) $this->throwExp(400, '查询不到该数据');
-            $commonGame ->game_id = $data['game_id'];
-            $commonGame ->game_name = $data['game_name'];
-            $commonGame ->game_icon = $data['game_icon'];
-            $commonGame ->game_status = $data['game_status'];
+            $commonGame->game_name = $data['game_name'];
+            $commonGame->game_icon = $data['game_icon'];
+            $commonGame->game_status = $data['game_status'];
 
             if (!$commonGame ->save()) $this->throwExp(400, '修改失败');
 
