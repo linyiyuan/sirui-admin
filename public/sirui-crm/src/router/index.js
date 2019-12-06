@@ -153,10 +153,23 @@ export const asyncRouterMap = [{
     path: '/passport',
     component: Layout,
     name: 'Api:passport',
-    redirect: '/passport/version_review',
+    redirect: '/passport/agent_matching',
     alwaysShow: true,
     meta: { title: '游戏中心', icon: 'passport' },
-    children: [{
+    children: [
+      {
+        path: 'agent_matching',
+        name: 'Api:passport/agentMatching',
+        component: () => import('@/views/passport/agentMatching'),
+        meta: { title: '匹配信息', icon: 'agent_matching' }
+      },
+      {
+        path: 'agent_matching_record',
+        name: 'Api:passport/agentMatchingRecord',
+        component: () => import('@/views/passport/agentMatchingRecord'),
+        meta: { title: '匹配记录', icon: 'agent_matching_record' }
+      },
+    {
         path: 'version_review',
         name: 'Api:passport/versionRreview',
         component: () => import('@/views/passport/versionReview'),

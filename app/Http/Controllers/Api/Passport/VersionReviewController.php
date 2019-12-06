@@ -67,33 +67,37 @@ class VersionReviewController extends CommonController
      */
     public function store(Request $request)
     {
-        $postData = $this->params['postData'] ?? $this->throwExp(400, '请求参数为空');
+        try {
+            $postData = $this->params['postData'] ?? $this->throwExp(400, '请求参数为空');
 
-        $data = [
-            'bundle_id' => $postData['bundle_id'],
-            'bundle_version' => $postData['bundle_version'],
-            'version_review_status' => $postData['version_review_status'] ?? 0,
-            'default_pid' => $postData['default_pid'] ?? 0,
-        ];
-        $rules = [
-            'bundle_id'  => 'required',
-            'bundle_version'  => 'required',
-        ];
-        $message = [
-            'bundle_id.required' => 'bundle_id不能为空',
-            'bundle_version.required' => 'bundle_version不能为空',
-        ];
-        $this->verifyParams($data, $rules, $message);
+            $data = [
+                'bundle_id' => $postData['bundle_id'],
+                'bundle_version' => $postData['bundle_version'],
+                'version_review_status' => $postData['version_review_status'] ?? 0,
+                'default_pid' => $postData['default_pid'] ?? 0,
+            ];
+            $rules = [
+                'bundle_id'  => 'required',
+                'bundle_version'  => 'required',
+            ];
+            $message = [
+                'bundle_id.required' => 'bundle_id不能为空',
+                'bundle_version.required' => 'bundle_version不能为空',
+            ];
+            $this->verifyParams($data, $rules, $message);
 
-        $versionReview = new VersionReview();
-        $versionReview->bundle_id = $data['bundle_id'];
-        $versionReview->bundle_version = $data['bundle_version'];
-        $versionReview->version_review_status = $data['bundle_id'];
-        $versionReview->default_pid = $data['default_pid'];
+            $versionReview = new VersionReview();
+            $versionReview->bundle_id = $data['bundle_id'];
+            $versionReview->bundle_version = $data['bundle_version'];
+            $versionReview->version_review_status = $data['bundle_id'];
+            $versionReview->default_pid = $data['default_pid'];
 
-        if (!$versionReview->save()) $this->throwExp(400, '添加审核开关失败');
+            if (!$versionReview->save()) $this->throwExp(400, '添加审核开关失败');
 
-        return handleResult(200, '添加审核开关成功');
+            return handleResult(200, '添加审核开关成功');
+        }catch (\Exception $e) {
+            return $this->errorExp($e);
+        }
     }
 
     /**
@@ -108,37 +112,42 @@ class VersionReviewController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $postData = $this->params['postData'] ?? $this->throwExp(400, '请求参数为空');
+        try {
 
-        $data = [
-            'id' => $id,
-            'bundle_id' => $postData['bundle_id'],
-            'bundle_version' => $postData['bundle_version'],
-            'version_review_status' => $postData['version_review_status'] ?? 0,
-            'default_pid' => $postData['default_pid'] ?? 0,
-        ];
-        $rules = [
-            'id'  => 'required|integer',
-            'bundle_id'  => 'required',
-            'bundle_version'  => 'required',
-        ];
-        $message = [
-            'id.required' => 'id不能为空',
-            'id.integer' => 'id必须为整型',
-            'bundle_id.required' => 'bundle_id不能为空',
-            'bundle_version.required' => 'bundle_version不能为空',
-        ];
-        $this->verifyParams($data, $rules, $message);
+            $postData = $this->params['postData'] ?? $this->throwExp(400, '请求参数为空');
 
-        $versionReview = VersionReview::find($id);
-        if (empty($versionReview)) $this->throwExp(400, '查询不到相应数据');
-        $versionReview->bundle_id = $data['bundle_id'];
-        $versionReview->bundle_version = $data['bundle_version'];
-        $versionReview->version_review_status = $data['version_review_status'];
-        $versionReview->default_pid = $data['default_pid'];
-        if (!$versionReview->save()) $this->throwExp(400, '修改失败');
+            $data = [
+                'id' => $id,
+                'bundle_id' => $postData['bundle_id'],
+                'bundle_version' => $postData['bundle_version'],
+                'version_review_status' => $postData['version_review_status'] ?? 0,
+                'default_pid' => $postData['default_pid'] ?? 0,
+            ];
+            $rules = [
+                'id'  => 'required|integer',
+                'bundle_id'  => 'required',
+                'bundle_version'  => 'required',
+            ];
+            $message = [
+                'id.required' => 'id不能为空',
+                'id.integer' => 'id必须为整型',
+                'bundle_id.required' => 'bundle_id不能为空',
+                'bundle_version.required' => 'bundle_version不能为空',
+            ];
+            $this->verifyParams($data, $rules, $message);
 
-        return handleResult(200, '修改成功');
+            $versionReview = VersionReview::find($id);
+            if (empty($versionReview)) $this->throwExp(400, '查询不到相应数据');
+            $versionReview->bundle_id = $data['bundle_id'];
+            $versionReview->bundle_version = $data['bundle_version'];
+            $versionReview->version_review_status = $data['version_review_status'];
+            $versionReview->default_pid = $data['default_pid'];
+            if (!$versionReview->save()) $this->throwExp(400, '修改失败');
+
+            return handleResult(200, '修改成功');
+        }catch (\Exception $e) {
+            return $this->errorExp($e);
+        }
     }
 
     /**
