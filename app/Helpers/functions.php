@@ -310,3 +310,8 @@ function pre($data)
     print_r($data);
     echo '</pre>';
 }
+
+function debugLog($info) 
+{
+    Log::channel('code_debug')->info(json_encode($info));
+}
