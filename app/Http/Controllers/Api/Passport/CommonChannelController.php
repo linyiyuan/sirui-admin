@@ -81,9 +81,11 @@ class CommonChannelController extends CommonController
             $this->verifyParams($data, $rules, $message);
 
             $commonChannel = new CommonChannel();
-            $commonChannel ->game_id = $data['game_id'];
+            $commonChannel ->channel_id = $data['channel_id'];
+            $commonChannel ->channel_name = $data['channel_name'];
             $commonChannel ->platform_id = $data['platform_id'];
-            $commonChannel ->platform_name = $data['platform_name'];
+            $commonChannel ->resource_id = $data['resource_id'];
+            $commonChannel ->api_url = $data['api_url'];
 
             if (!$commonChannel ->save()) $this->throwExp(400, '添加失败');
 
