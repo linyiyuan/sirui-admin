@@ -311,7 +311,13 @@ function pre($data)
     echo '</pre>';
 }
 
-function debugLog($info) 
-{
-    Log::channel('code_debug')->info(json_encode($info));
+/**
+ * 记录调试日志
+ *
+ * @param $content
+ */
+function debugLog($content) {
+    if (!is_string($content)) $content = json_encode($content);
+
+    \Illuminate\Support\Facades\Log::channel('code_debug')->info($content);
 }
