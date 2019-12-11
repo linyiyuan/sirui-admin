@@ -208,7 +208,7 @@
         }).then(() => {
           delAgentMatchingRecord(this.listQuery).then(response=>{
             this.$message({
-              message: '删除成功！',
+              message: response.data,
               type: 'success',
               duration: 1000
             });
