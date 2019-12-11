@@ -14,3 +14,11 @@ export function agentMatching(params) {
     params:params
   })
 }
+
+export function delAgentMatchingRecord(params) {
+  return request({
+    url:'/passport/del_agent_matching_record',
+    method:'get',
+    params:params
+  })
+}

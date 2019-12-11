@@ -104,7 +104,10 @@ class AgentMatchingController extends CommonController
             $total = $query->count();
 
             if (!empty($query->get())) {
-                $query->delete();
+                return handleResult(200, [
+                    'list' => $query->get()
+                ]);
+//                $query->delete();
             }
 
             return handleResult(200 , '删除成功，共删除' . $total . '条目');
