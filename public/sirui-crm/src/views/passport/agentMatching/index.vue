@@ -44,6 +44,8 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
+      <el-button style="float: right;" icon="el-icon-plus" type="danger" size="mini" @click="handleDelAgentRecord()">删除匹配信息
+      </el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="userTable"
@@ -103,7 +105,7 @@
   </div>
 </template>
 <script>
-  import {agentMatching} from '@/api/passport/agentMatchingRecord'
+  import {agentMatching, delAgentMatchingRecord} from '@/api/passport/agentMatchingRecord'
   import {formatDate} from '@/utils/date';
   import store from '@/store'
   const defaultListQuery = {
@@ -198,6 +200,22 @@
           this.total = response.data.total;
         });
       },
+      handleDelAgentRecord() {
+        this.$confirm('是否要进行该删除操作?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          delAgentMatchingRecord(this.listQuery).then(response=>{
+            this.$message({
+              message: '删除成功！',
+              type: 'success',
+              duration: 1000
+            });
+            this.getList();
+          });
+        })
+      }
     }
   }
 </script>
