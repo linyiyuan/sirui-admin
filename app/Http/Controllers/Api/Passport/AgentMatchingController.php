@@ -84,4 +84,33 @@ class AgentMatchingController extends CommonController
         }
     }
 
+    /**
+     * 根据条件删除特定的匹配信息
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delAgentMatchingRecordByCondition()
+    {
+        try {
+            $query = AgentMatching::query();
+
+            if (strlen($this->params['affix'] ?? '') > 0) $query->where('affix', $this->params['affix']);
+            if (strlen($this->params['ip'] ?? '') > 0) $query->where('ip', $this->params['ip']);
+            if (strlen($this->params['phone'] ?? '') > 0) $query->where('phone', 'like' , '%' . $this->params['phone'] . '%');
+            if (strlen($this->params['model'] ?? '') > 0) $query->where('model', 'like' , '%' . $this->params['model'] . '%');
+            if (strlen($this->params['os'] ?? '') > 0) $query->where('os', $this->params['os']);
+
+            $query->orderBy('addTime', 'desc');
+            $total = $query->count();
+
+            if (!empty($query->get())) {
+                $query->delete();
+            }
+
+            return handleResult(200 , '删除成功，共删除' . $total . '条目');
+        }catch (\Exception $e) {
+            return $this->errorExp($e);
+        }
+    }
+
 }

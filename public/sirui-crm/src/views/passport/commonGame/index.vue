@@ -118,7 +118,6 @@
         <el-button size="small" type="primary" @click="handleSendDataByPlatform('commonPlatformForm')">确 定</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 <script>
