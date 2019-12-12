@@ -16,7 +16,7 @@
         </el-table-column>
         <el-table-column sortable label="审核状态" prop="version_review_status" width="250" align="center">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.version_review_status" :active-value=1 :inactive-value=0 active-color="#13ce66" inactive-color="#ff4949" active-text="开启" inactive-text="关闭" @change="changeVersionReviewStatus(scope.row)">
+            <el-switch v-model="scope.row.version_review_status" :active-value=1 :inactive-value=0 active-color="#13ce66" inactive-color="#ff4949" active-text="允许热更" inactive-text="不允许热更" @change="changeVersionReviewStatus(scope.row)">
             </el-switch>
           </template>
         </el-table-column>
