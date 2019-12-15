@@ -16,7 +16,7 @@ return [
 
     'distributed_deployment' => [
 
-        'enable' => false, # 是否启用
+        'enable' => true, # 是否启用
 
         'role' => 'web', # 服务器角色，支持选项: 'web', 'storage'
 
@@ -75,7 +75,7 @@ return [
     |
     */
 
-    'resource_subdir_rule' => 'month',
+    'resource_subdir_rule' => 'deate',
 
     /*
     |--------------------------------------------------------------------------
