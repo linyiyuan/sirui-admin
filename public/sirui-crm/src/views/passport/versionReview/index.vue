@@ -12,10 +12,10 @@
           <template slot-scope="scope">{{scope.row.bundle_id}}</template>
         </el-table-column>
         <el-table-column sortable label="包名描述" prop="versionReviewname" width="200" align="center">
-          <template slot-scope="scope">{{scope.row.bundle_id}}</template>
-        </el-table-column>
-        <el-table-column label="包版本" width="120" align="center">
           <template slot-scope="scope">{{scope.row.bundle_desc}}</template>
+        </el-table-column>
+        <el-table-column label="包版本" width="100" align="center">
+          <template slot-scope="scope">{{scope.row.bundle_version}}</template>
         </el-table-column>
         <el-table-column sortable label="审核状态" prop="version_review_status" width="250" align="center">
           <template slot-scope="scope">
@@ -23,13 +23,13 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column sortable label="默认指定渠道" prop="default_pid" width="250" align="center">
+        <el-table-column sortable label="默认指定渠道" prop="default_pid" width="150" align="center">
           <template slot-scope="scope">{{scope.row.default_pid}}</template>
         </el-table-column>
-        <el-table-column sortable label="创建时间" width="280" prop="created_at" align="center">
+        <el-table-column sortable label="创建时间" width="230" prop="created_at" align="center">
           <template slot-scope="scope">{{ scope.row.created_at}}</template>
         </el-table-column>
-        <el-table-column sortable label="更新时间" width="280" prop="updated_at" align="center">
+        <el-table-column sortable label="更新时间" width="230" prop="updated_at" align="center">
           <template slot-scope="scope">{{ scope.row.updated_at}}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
