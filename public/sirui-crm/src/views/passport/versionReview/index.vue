@@ -11,8 +11,11 @@
         <el-table-column sortable label="包名" prop="versionReviewname" width="400" align="center">
           <template slot-scope="scope">{{scope.row.bundle_id}}</template>
         </el-table-column>
-        <el-table-column label="包版本" width="200" align="center">
-          <template slot-scope="scope">{{scope.row.bundle_version}}</template>
+        <el-table-column sortable label="包名描述" prop="versionReviewname" width="200" align="center">
+          <template slot-scope="scope">{{scope.row.bundle_id}}</template>
+        </el-table-column>
+        <el-table-column label="包版本" width="120" align="center">
+          <template slot-scope="scope">{{scope.row.bundle_desc}}</template>
         </el-table-column>
         <el-table-column sortable label="审核状态" prop="version_review_status" width="250" align="center">
           <template slot-scope="scope">
@@ -47,6 +50,9 @@
         <el-form-item label="包名" prop="bundle_id">
           <el-input type="text" v-model="versionReviewFormData.bundle_id" placeholder="请输入包名" auto-complete="off" size="medium"></el-input>
         </el-form-item>
+        <el-form-item label="包名" prop="bundle_id">
+          <el-input type="text" v-model="versionReviewFormData.bundle_desc" placeholder="请输入包名描述" auto-complete="off" size="medium"></el-input>
+        </el-form-item>
         <el-form-item label="包版本" prop="bundle_version">
           <el-input type="text" v-model="versionReviewFormData.bundle_version" placeholder="请输入包版本" auto-complete="off" size="medium"></el-input>
         </el-form-item>
@@ -78,6 +84,7 @@ const defaultListQuery = {
 const defaultVersionReviewFormData = {
   id: null,
   bundle_id: null,
+  bundle_desc: null,
   bundle_version: null,
   default_pid: 0,
   version_review_status: 0,
@@ -171,6 +178,7 @@ export default {
       this.versionReviewFormData.bundle_version = row.bundle_version
       this.versionReviewFormData.version_review_status = row.version_review_status
       this.versionReviewFormData.default_pid = row.default_pid
+      this.versionReviewFormData.bundle_desc = row.bundle_desc
     },
     handleSendData(versionReviewForm) {
       this.$refs[versionReviewForm].validate((valid) => {
