@@ -75,6 +75,7 @@ class VersionReviewController extends CommonController
                 'bundle_version' => $postData['bundle_version'],
                 'version_review_status' => $postData['version_review_status'] ?? 0,
                 'default_pid' => $postData['default_pid'] ?? 0,
+                'bundle_desc' => $postData['bundle_desc'] ?? '',
             ];
             $rules = [
                 'bundle_id'  => 'required',
@@ -91,6 +92,7 @@ class VersionReviewController extends CommonController
             $versionReview->bundle_version = $data['bundle_version'];
             $versionReview->version_review_status = $data['bundle_id'];
             $versionReview->default_pid = $data['default_pid'];
+            $versionReview->bundle_desc = $data['bundle_desc'];
 
             if (!$versionReview->save()) $this->throwExp(400, '添加审核开关失败');
 
@@ -122,6 +124,7 @@ class VersionReviewController extends CommonController
                 'bundle_version' => $postData['bundle_version'],
                 'version_review_status' => $postData['version_review_status'] ?? 0,
                 'default_pid' => $postData['default_pid'] ?? 0,
+                'bundle_desc' => $postData['bundle_desc'] ?? '',
             ];
             $rules = [
                 'id'  => 'required|integer',
@@ -142,6 +145,7 @@ class VersionReviewController extends CommonController
             $versionReview->bundle_version = $data['bundle_version'];
             $versionReview->version_review_status = $data['version_review_status'];
             $versionReview->default_pid = $data['default_pid'];
+            $versionReview->bundle_desc = $data['bundle_desc'];
             if (!$versionReview->save()) $this->throwExp(400, '修改失败');
 
             return handleResult(200, '修改成功');
