@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Passport;
 use App\Http\Controllers\Api\CommonController;
 use App\Models\Passport\VersionReview;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 /**
@@ -46,6 +47,10 @@ class VersionReviewController extends CommonController
 
             $query = $this->pagingCondition($query, $this->params);
             $list = $query->get()->toArray();
+
+            foreach ($list as $key => $val) {
+                $list[$key]['pidCount'] = DB::table('bundle_id_pid')->where('bundle_id', $val['bundle_id'])->count();
+            }
 
             return handleResult(200, [
                 'list' => $list,
