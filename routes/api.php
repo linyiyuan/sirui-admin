@@ -84,6 +84,7 @@ Route::group(['namespace' => 'Api'],function(){
                     Route::resource('common_game', 'CommonGameController');                            //游戏设置
                     Route::resource('common_platform', 'CommonPlatformController');                    //游戏设置
                     Route::resource('common_channel', 'CommonChannelController');                      //游戏设置
+                    Route::resource('bundle_id_pid', 'BundleIdPidController');                          //游戏设置
                 });
 
                 Route::get('test', 'TestController@test'); //测试接口
