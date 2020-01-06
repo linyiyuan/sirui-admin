@@ -5,6 +5,8 @@
       <span>数据列表</span>
       <el-button style="float: right;" icon="el-icon-plus" type="primary" size="mini" @click="handleAddVersionReview">添加审核
       </el-button>
+      <el-button style="float: right;" icon="el-icon-plus" type="primary" size="mini" @click="handleAddVersionReview">是否显示最高版本
+      </el-button>
     </el-card>
     <div class="table-container">
       <el-table ref="versionReviewTable" :data="list" style="width: 100%;" v-loading="listLoading" border>
