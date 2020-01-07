@@ -34,7 +34,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button icon="el-icon-view" type="warning" size="mini" @click="handleViewBundleIdPid(scope.row.bundle_id)">查看渠道({{scope.row.pidCount}})</el-button>
+            <el-button icon="el-icon-view" type="warning" size="mini" @click="handleViewBundleIdPid(scope.row.bundle_id)">查看渠道({{scope.<row class="pidCount"></row>}})</el-button>
             <el-button icon="el-icon-edit" type="primary" size="mini" @click="handleEditVersionReview(scope.$index, scope.row)">编辑</el-button>
             <el-button icon="el-icon-delete" type="danger" size="mini" @click="handleDeleteVersionReview(scope.$index, scope.row)">删除</el-button>
           </template>
