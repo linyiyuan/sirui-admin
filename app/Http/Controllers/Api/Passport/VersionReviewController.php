@@ -41,6 +41,13 @@ class VersionReviewController extends CommonController
     public function index()
     {
         try {
+            $type = $this->params['type'] ?? '';
+            
+            //判断是否取最大值
+            if($type == 'max') {
+            
+            }
+                
             $query = VersionReview::query();
 
             $total = $query->count();
