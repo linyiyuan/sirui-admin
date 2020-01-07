@@ -42,18 +42,21 @@ class VersionReviewController extends CommonController
     {
         try {
             $type = $this->params['type'] ?? '';
-            
-            //判断是否取最大值
-            if($type == 'max') {
-            
-            }
-                
             $query = VersionReview::query();
 
-            $total = $query->count();
+            //判断是否取最大值
+            if($type == 1) {
+                $query = $query->select(DB::raw('max(bundle_version) as bundle_version, id, bundle_id, version_review_status, default_pid, created_at, updated_at, bundle_desc'));
+                $query = $query->groupBy('bundle_id');
+                $list = $query->get()->toArray();
+                $total = count($list);
+            }else{
+                $total = $query->count();
 
-            $query = $this->pagingCondition($query, $this->params);
-            $list = $query->get()->toArray();
+                $query = $this->pagingCondition($query, $this->params);
+                $list = $query->get()->toArray();
+            }
+
 
             foreach ($list as $key => $val) {
                 $list[$key]['pidCount'] = DB::table('bundle_id_pid')->where('bundle_id', $val['bundle_id'])->count();
@@ -102,7 +105,7 @@ class VersionReviewController extends CommonController
             $versionReview = new VersionReview();
             $versionReview->bundle_id = $data['bundle_id'];
             $versionReview->bundle_version = $data['bundle_version'];
-            $versionReview->version_review_status = $data['bundle_id'];
+            $versionReview->version_review_status = $data['version_review_status'];
             $versionReview->default_pid = $data['default_pid'];
             $versionReview->bundle_desc = $data['bundle_desc'];
 
