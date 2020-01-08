@@ -46,7 +46,7 @@ class VersionReviewController extends CommonController
 
             //判断是否取最大值
             if($type == 1) {
-                $query = $query->select(DB::raw('max(bundle_version) as bundle_version, id, bundle_id, version_review_status, default_pid, created_at, updated_at, bundle_desc'));
+                $query = $query->select(DB::raw('max(bundle_version) as bundle_version, id, bundle_id, version_review_status, default_pid, created_at, updated_at, bundle_desc， bundle_status'));
                 $query = $query->groupBy('bundle_id');
                 $list = $query->get()->toArray();
                 $total = count($list);
@@ -91,6 +91,7 @@ class VersionReviewController extends CommonController
                 'version_review_status' => $postData['version_review_status'] ?? 0,
                 'default_pid' => $postData['default_pid'] ?? 0,
                 'bundle_desc' => $postData['bundle_desc'] ?? '',
+                'bundle_status' => $postData['bundle_status'] ?? 1,
             ];
             $rules = [
                 'bundle_id'  => 'required',
@@ -108,6 +109,7 @@ class VersionReviewController extends CommonController
             $versionReview->version_review_status = $data['version_review_status'];
             $versionReview->default_pid = $data['default_pid'];
             $versionReview->bundle_desc = $data['bundle_desc'];
+            $versionReview->bundle_status = $data['bundle_status'];
 
             if (!$versionReview->save()) $this->throwExp(400, '添加审核开关失败');
 
@@ -140,6 +142,7 @@ class VersionReviewController extends CommonController
                 'version_review_status' => $postData['version_review_status'] ?? 0,
                 'default_pid' => $postData['default_pid'] ?? 0,
                 'bundle_desc' => $postData['bundle_desc'] ?? '',
+                'bundle_status' => $postData['bundle_status'] ?? 1,
             ];
             $rules = [
                 'id'  => 'required|integer',
@@ -161,6 +164,7 @@ class VersionReviewController extends CommonController
             $versionReview->version_review_status = $data['version_review_status'];
             $versionReview->default_pid = $data['default_pid'];
             $versionReview->bundle_desc = $data['bundle_desc'];
+            $versionReview->bundle_status = $data['bundle_status'];
             if (!$versionReview->save()) $this->throwExp(400, '修改失败');
 
             return handleResult(200, '修改成功');
