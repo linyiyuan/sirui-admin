@@ -92,10 +92,17 @@
         <el-form-item label="默认指定渠道" prop="default_pid">
           <el-input type="text" v-model="versionReviewFormData.default_pid" placeholder="请输入默认指定渠道" auto-complete="off" size="medium"></el-input>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="审核状态">
           <el-radio-group v-model="versionReviewFormData.version_review_status">
             <el-radio :label="1">启动</el-radio>
             <el-radio :label="0">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="上线状态">
+          <el-radio-group v-model="versionReviewFormData.bundle_status">
+            <el-radio :label="1">测试</el-radio>
+            <el-radio :label="2">上线</el-radio>
+            <el-radio :label="3">上线（禁止修改）</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -186,6 +193,7 @@ const defaultVersionReviewFormData = {
   bundle_version: null,
   default_pid: 0,
   version_review_status: 0,
+  bundle_status: 1,
 };
 const defaultBundleIdPidFormData = {
   id: null,
@@ -394,6 +402,7 @@ export default {
       this.versionReviewFormData.version_review_status = row.version_review_status
       this.versionReviewFormData.default_pid = row.default_pid
       this.versionReviewFormData.bundle_desc = row.bundle_desc
+      this.versionReviewFormData.bundle_status = row.bundle_status
     },
     handleSendData(versionReviewForm) {
       this.$refs[versionReviewForm].validate((valid) => {

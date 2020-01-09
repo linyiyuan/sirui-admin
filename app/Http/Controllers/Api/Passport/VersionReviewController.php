@@ -46,7 +46,7 @@ class VersionReviewController extends CommonController
 
             //判断是否取最大值
             if($type == 1) {
-                $query = $query->select(DB::raw('max(bundle_version) as bundle_version, id, bundle_id, version_review_status, default_pid, created_at, updated_at, bundle_desc， bundle_status'));
+                $query = $query->select(DB::raw('max(bundle_version) as bundle_version, id, bundle_id, version_review_status, default_pid, created_at, updated_at, bundle_desc, bundle_status'));
                 $query = $query->groupBy('bundle_id');
                 $list = $query->get()->toArray();
                 $total = count($list);
@@ -164,6 +164,7 @@ class VersionReviewController extends CommonController
             $versionReview->version_review_status = $data['version_review_status'];
             $versionReview->default_pid = $data['default_pid'];
             $versionReview->bundle_desc = $data['bundle_desc'];
+            if ($versionReview->bundle_status != $data['bundle_status'] && $versionReview->bundle_status == 3)  $this->throwExp(400, '禁止修改其上线状态');
             $versionReview->bundle_status = $data['bundle_status'];
             if (!$versionReview->save()) $this->throwExp(400, '修改失败');
 
